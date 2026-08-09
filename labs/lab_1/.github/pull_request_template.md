@@ -2,32 +2,36 @@
 
 <!-- Describe de forma concisa qué cambios introduce este Pull Request y qué problema resuelve. -->
 
+Se agrega documentación al archivo 'pull_request_template.md'. No resuelve ningún problema en particular.
+
 ## Tipo de cambio
 
 - [ ] Feature
 - [ ] Bugfix
 - [ ] Refactor
-- [ ] Documentación
+- [X] Documentación
 - [ ] Configuración / Tooling / CI
 
 ## Cambios principales
 
 <!-- Detalla los cambios importantes realizados en este PR. -->
 
+Se documenta el archivo en cuestión.
+
 ## Integrantes
 
-- Nombre Apellido 1
-- Nombre Apellido 2
+- Juan Molina
+- Agustín Zavala
 
 ## Validaciones realizadas
 
-- [ ] `uv sync --locked --all-groups`
-- [ ] `uv run pre-commit run --all-files`
-- [ ] `uv run ruff check .`
-- [ ] `uv run ruff format --check .`
-- [ ] CI pasó correctamente
+- [X] `uv sync --locked --all-groups`
+- [X] `uv run pre-commit run --all-files`
+- [x] `uv run ruff check .`
+- [X] `uv run ruff format --check .`
+- [X] CI pasó correctamente
 
 ## Evidencia o enlaces relevantes
 
-- Notebook:
-- Pull Request:
+- Notebook: https://github.com/Jimol1711/IA7202/blob/main/labs/lab_1/Lab1_Enunciado.ipynb
+- Pull Request: https://github.com/Jimol1711/IA7202/compare/main...lab_1
