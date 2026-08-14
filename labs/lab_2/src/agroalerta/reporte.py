@@ -1,4 +1,4 @@
-from sensores import Sensor
+from .sensores import Sensor
 
 
 def contar_riesgos(sensores: list[Sensor], lecturas: dict[str, list[float]]):
