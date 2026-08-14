@@ -18,36 +18,36 @@ class Sensor(ABC):
 class SensorTemperatura(Sensor):
     def __init__(
         self,
-        minimo: int,
-        maximo: int,
+        _minimo: int,
+        _maximo: int,
     ) -> None:
         super().__init__("Temperatura", "°C")
-        self.minimo = minimo
-        self.maximo = maximo
+        self._minimo = _minimo
+        self._maximo = _maximo
 
     def es_riesgo(self, valor: int) -> bool:
-        return valor < self.minimo or valor > self.maximo
+        return valor < self._minimo or valor > self._maximo
 
 
 class SensorViento(Sensor):
     def __init__(
         self,
-        maximo: int,
+        _maximo: int,
     ) -> None:
         super().__init__("Viento", "km/h")
-        self.maximo = maximo
+        self._maximo = _maximo
 
     def es_riesgo(self, valor: int) -> bool:
-        return valor > self.maximo
+        return valor > self._maximo
 
 
 class SensorHumedad(Sensor):
     def __init__(
         self,
-        maximo: int,
+        _maximo: int,
     ) -> None:
         super().__init__("humedad", "%")
-        self.maximo = maximo
+        self._maximo = _maximo
 
     def es_riesgo(self, valor: int) -> bool:
-        return valor > self.maximo
+        return valor > self._maximo
