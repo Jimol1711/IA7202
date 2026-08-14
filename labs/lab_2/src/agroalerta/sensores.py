@@ -26,6 +26,8 @@ class SensorTemperatura(Sensor):
         self._maximo = _maximo
 
     def es_riesgo(self, valor: float) -> bool:
+        if not -100 <= valor <= 100:
+            return False
         return valor < self._minimo or valor > self._maximo
 
 
@@ -38,6 +40,8 @@ class SensorViento(Sensor):
         self._maximo = _maximo
 
     def es_riesgo(self, valor: float) -> bool:
+        if not 0 <= valor <= 500:
+            return False
         return valor > self._maximo
 
 
@@ -50,4 +54,6 @@ class SensorHumedad(Sensor):
         self._maximo = _maximo
 
     def es_riesgo(self, valor: float) -> bool:
+        if not 0 <= valor <= 100:
+            return False
         return valor > self._maximo
