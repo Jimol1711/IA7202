@@ -1,4 +1,7 @@
-class Sensor:
+from abc import ABC, abstractmethod
+
+
+class Sensor(ABC):
     def __init__(
         self,
         nombre: str,
@@ -7,12 +10,17 @@ class Sensor:
         self.nombre = nombre
         self.unidad = unidad
 
+    @abstractmethod
     def es_riesgo(self, valor: int) -> bool:
         return False
 
 
 class SensorTemperatura(Sensor):
-    def __init__(self, minimo: int, maximo: int) -> None:
+    def __init__(
+        self,
+        minimo: int,
+        maximo: int,
+    ) -> None:
         super().__init__("Temperatura", "°C")
         self.minimo = minimo
         self.maximo = maximo
@@ -22,7 +30,10 @@ class SensorTemperatura(Sensor):
 
 
 class SensorViento(Sensor):
-    def __init__(self, maximo: int):
+    def __init__(
+        self,
+        maximo: int,
+    ) -> None:
         super().__init__("Viento", "km/h")
         self.maximo = maximo
 
@@ -31,7 +42,10 @@ class SensorViento(Sensor):
 
 
 class SensorHumedad(Sensor):
-    def __init__(self, maximo: int):
+    def __init__(
+        self,
+        maximo: int,
+    ) -> None:
         super().__init__("humedad", "%")
         self.maximo = maximo
 
