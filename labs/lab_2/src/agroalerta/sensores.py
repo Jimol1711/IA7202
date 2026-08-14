@@ -11,7 +11,7 @@ class Sensor(ABC):
         self.unidad = unidad
 
     @abstractmethod
-    def es_riesgo(self, valor: int) -> bool:
+    def es_riesgo(self, valor: float) -> bool:
         return False
 
 
@@ -21,11 +21,11 @@ class SensorTemperatura(Sensor):
         _minimo: int,
         _maximo: int,
     ) -> None:
-        super().__init__("Temperatura", "°C")
+        super().__init__("temperatura", "°C")
         self._minimo = _minimo
         self._maximo = _maximo
 
-    def es_riesgo(self, valor: int) -> bool:
+    def es_riesgo(self, valor: float) -> bool:
         return valor < self._minimo or valor > self._maximo
 
 
@@ -34,10 +34,10 @@ class SensorViento(Sensor):
         self,
         _maximo: int,
     ) -> None:
-        super().__init__("Viento", "km/h")
+        super().__init__("viento", "km/h")
         self._maximo = _maximo
 
-    def es_riesgo(self, valor: int) -> bool:
+    def es_riesgo(self, valor: float) -> bool:
         return valor > self._maximo
 
 
@@ -49,5 +49,5 @@ class SensorHumedad(Sensor):
         super().__init__("humedad", "%")
         self._maximo = _maximo
 
-    def es_riesgo(self, valor: int) -> bool:
+    def es_riesgo(self, valor: float) -> bool:
         return valor > self._maximo
