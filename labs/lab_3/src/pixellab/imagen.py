@@ -14,15 +14,30 @@ class Imagen:
 
     def __init__(self, img: np.ndarray) -> None:
         # Su código aquí
-        raise NotImplementedError(
-            "Completen __init__ antes de ejecutar el programa."
-        )
+        if not isinstance(img, np.ndarray):
+            raise TypeError(
+                "Debes entregar un arreglo de numpy como argumento del constructor de Imagen."
+            )
+        if not img.ndim == 3:
+            raise ValueError("3 dimensiones")
+        if not img.shape[-1] == 3:
+            raise ValueError("3 canales")
+        self.imagen = img
 
     def __add__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        raise NotImplementedError(
-            "Completen __add__ antes de ejecutar el programa."
-        )
+        if (
+            isinstance(other, Imagen)
+            and not self.imagen.ndim == other.imagen.ndim
+        ):
+            raise ValueError("no calzan")
+
+        if isinstance(other, float):
+            other = int(other)
+
+        new_other = np.zeros(self.imagen.shape, dtype="int64")
+
+        return new_other
 
     def __radd__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
