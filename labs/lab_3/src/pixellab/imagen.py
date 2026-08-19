@@ -27,44 +27,99 @@ class Imagen:
     def __add__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
         if (
-            isinstance(other, Imagen)
-            and not self.imagen.ndim == other.imagen.ndim
+            (isinstance(other, Imagen))
+            and (not self.imagen.ndim == other.imagen.ndim)
+        ) or (
+            (isinstance(other, np.ndarray))
+            and (not self.imagen.ndim == other.ndim)
         ):
             raise ValueError("no calzan")
 
-        if isinstance(other, float):
-            other = int(other)
+        new_other = np.copy(self.imagen)
 
-        new_other = np.zeros(self.imagen.shape, dtype="int64")
+        new_other = new_other + other
+        new_other = new_other.astype("int")
 
-        return new_other
+        new_other[new_other > 255] = 255
+        new_other[new_other < 0] = 0
+
+        new_imagen = Imagen(new_other)
+
+        return new_imagen
 
     def __radd__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen __radd__ antes de ejecutar el programa."
-        )
+        return self.__add__(other)
 
     def __sub__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        raise NotImplementedError(
-            "Completen __sub__ antes de ejecutar el programa."
-        )
+        if (
+            (isinstance(other, Imagen))
+            and (not self.imagen.ndim == other.imagen.ndim)
+        ) or (
+            (isinstance(other, np.ndarray))
+            and (not self.imagen.ndim == other.ndim)
+        ):
+            raise ValueError("no calzan")
+
+        new_other = self.imagen.copy()
+
+        new_other -= other
+        new_other = new_other.astype(int)
+
+        new_other[new_other > 255] = 255
+        new_other[new_other < 0] = 0
+
+        new_imagen = Imagen(new_other)
+
+        return new_imagen
 
     def __rsub__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        raise NotImplementedError(
-            "Completen __rsub__ antes de ejecutar el programa."
-        )
+        if (
+            (isinstance(other, Imagen))
+            and (not self.imagen.ndim == other.imagen.ndim)
+        ) or (
+            (isinstance(other, np.ndarray))
+            and (not self.imagen.ndim == other.ndim)
+        ):
+            raise ValueError("no calzan")
+
+        new_other = np.zeros(shape=self.imagen.ndim, dtype="float") + other
+        new_other = new_other - self.imagen.copy()
+
+        new_other = new_other.astype(int)
+
+        new_other[new_other > 255] = 255
+        new_other[new_other < 0] = 0
+
+        new_imagen = Imagen(new_other)
+
+        return new_imagen
+
+        return
 
     def __mul__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen __mul__ antes de ejecutar el programa."
-        )
+
+        if (
+            (isinstance(other, Imagen))
+            and (not self.imagen.ndim == other.imagen.ndim)
+        ) or (
+            (isinstance(other, np.ndarray))
+            and (not self.imagen.ndim == other.ndim)
+        ):
+            raise ValueError("no calzan")
+
+        new_other = self.imagen.copy()
+
+        new_other *= other
+        new_other = new_other.astype(int)
+
+        new_other[new_other > 255] = 255
+        new_other[new_other < 0] = 0
+
+        new_imagen = Imagen(new_other)
+
+        return new_imagen
 
     def __rmul__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen __rmul__ antes de ejecutar el programa."
-        )
+        return self.__mul__(other)
