@@ -25,6 +25,8 @@ class LibImagen:
             + 0.587 * value_green_channel
             + 0.114 * value_blue_channel
         )
+        brightness[brightness > 255] = 255
+        brightness[brightness < 0] = 0
         channel_brightness = np.stack(
             (brightness, brightness, brightness), axis=-1
         )
@@ -39,6 +41,8 @@ class LibImagen:
 
         if is_channel_r or is_channel_b or is_channel_g:
             og_img = img_in.imagen.copy()
+            og_img[og_img[..., :] > 255] = 255
+            og_img[og_img[..., :] < 0] = 0
             num_channel = 0 if is_channel_r else (1 if is_channel_g else 2)
             indexes = [0, 1, 2]
             indexes = [i for i in indexes if i != num_channel]
@@ -51,22 +55,37 @@ class LibImagen:
             )
 
     def flip(self, img_in: Imagen, axis: str) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen flip antes de ejecutar el programa."
-        )
+        is_axis_h = axis == "h"
+        is_axis_v = axis == "v"
+        img_out = img_in.imagen.copy()
+        img_out[img_out[..., :] > 255] = 255
+        img_out[img_out[..., :] < 0] = 0
+        if is_axis_h:
+            img_out = img_out[:, ::-1, ...]
+            return Imagen(img_out.astype(int))
+        elif is_axis_v:
+            img_out = img_out[::-1, ...]
+            return Imagen(img_out.astype(int))
+        else:
+            raise ValueError(
+                "Eje 'x' no válido. Valores posibles: 'h' (horizontal) o 'v' (vertical)."
+            )
 
     def set_saturation(self, img_in: Imagen, C: float) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen set_saturation antes de ejecutar el programa."
-        )
+        gris = self.to_gray(img_in)
+        R = gris + C * (img_in - gris)
+        R.imagen[R.imagen[..., :] > 255] = 255
+        R.imagen[R.imagen[..., :] < 0] = 0
+        R.imagen = R.imagen.astype(int)
+        return R
 
     def set_contrast(self, img_in: Imagen, C: float) -> Imagen:
-        # Su código aquí
-        raise NotImplementedError(
-            "Completen set_contrast antes de ejecutar el programa."
-        )
+        F = 259 * (C + 255) / (255 * (259 - C))
+        R = F * (img_in - 128) + 128
+        R.imagen[R.imagen[..., :] > 255] = 255
+        R.imagen[R.imagen[..., :] < 0] = 0
+        R.imagen = R.imagen.astype(int)
+        return R
 
     def conv_channel(self, img_in: Imagen, kernel: np.ndarray) -> Imagen:
         """Por documentar (esto es parte del trabajo de la Etapa 6)."""
