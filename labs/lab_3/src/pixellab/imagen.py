@@ -26,19 +26,25 @@ class Imagen:
 
     def __add__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        if (
-            (isinstance(other, Imagen))
-            and (not self.imagen.ndim == other.imagen.ndim)
-        ) or (
-            (isinstance(other, np.ndarray))
-            and (not self.imagen.ndim == other.ndim)
-        ):
+
+        other_value = other.imagen if isinstance(other, Imagen) else other
+
+        other_shape = (
+            other.imagen.shape
+            if isinstance(other, Imagen)
+            else (
+                other.shape
+                if isinstance(other, np.ndarray)
+                else self.imagen.shape
+            )
+        )
+
+        if self.imagen.shape != other_shape:
             raise ValueError("no calzan")
 
-        new_other = np.copy(self.imagen)
+        new_other = self.imagen.copy() + other_value
 
-        new_other = new_other + other
-        new_other = new_other.astype("int")
+        new_other = new_other.astype(int)
 
         new_other[new_other > 255] = 255
         new_other[new_other < 0] = 0
@@ -52,18 +58,24 @@ class Imagen:
 
     def __sub__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        if (
-            (isinstance(other, Imagen))
-            and (not self.imagen.ndim == other.imagen.ndim)
-        ) or (
-            (isinstance(other, np.ndarray))
-            and (not self.imagen.ndim == other.ndim)
-        ):
+
+        other_value = other.imagen if isinstance(other, Imagen) else other
+
+        other_shape = (
+            other.imagen.shape
+            if isinstance(other, Imagen)
+            else (
+                other.shape
+                if isinstance(other, np.ndarray)
+                else self.imagen.shape
+            )
+        )
+
+        if self.imagen.shape != other_shape:
             raise ValueError("no calzan")
 
-        new_other = self.imagen.copy()
+        new_other = self.imagen.copy() - other_value
 
-        new_other -= other
         new_other = new_other.astype(int)
 
         new_other[new_other > 255] = 255
@@ -75,17 +87,24 @@ class Imagen:
 
     def __rsub__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
         # Su código aquí
-        if (
-            (isinstance(other, Imagen))
-            and (not self.imagen.ndim == other.imagen.ndim)
-        ) or (
-            (isinstance(other, np.ndarray))
-            and (not self.imagen.ndim == other.ndim)
-        ):
+        # Su código aquí
+
+        other_value = other.imagen if isinstance(other, Imagen) else other
+
+        other_shape = (
+            other.imagen.shape
+            if isinstance(other, Imagen)
+            else (
+                other.shape
+                if isinstance(other, np.ndarray)
+                else self.imagen.shape
+            )
+        )
+
+        if self.imagen.shape != other_shape:
             raise ValueError("no calzan")
 
-        new_other = np.zeros(shape=self.imagen.ndim, dtype="float") + other
-        new_other = new_other - self.imagen.copy()
+        new_other = other_value - self.imagen.copy()
 
         new_other = new_other.astype(int)
 
@@ -99,19 +118,25 @@ class Imagen:
         return
 
     def __mul__(self, other: int | float | np.ndarray | Imagen) -> Imagen:
+        # Su código aquí
 
-        if (
-            (isinstance(other, Imagen))
-            and (not self.imagen.ndim == other.imagen.ndim)
-        ) or (
-            (isinstance(other, np.ndarray))
-            and (not self.imagen.ndim == other.ndim)
-        ):
+        other_value = other.imagen if isinstance(other, Imagen) else other
+
+        other_shape = (
+            other.imagen.shape
+            if isinstance(other, Imagen)
+            else (
+                other.shape
+                if isinstance(other, np.ndarray)
+                else self.imagen.shape
+            )
+        )
+
+        if self.imagen.shape != other_shape:
             raise ValueError("no calzan")
 
-        new_other = self.imagen.copy()
+        new_other = self.imagen.copy() * other_value
 
-        new_other *= other
         new_other = new_other.astype(int)
 
         new_other[new_other > 255] = 255
