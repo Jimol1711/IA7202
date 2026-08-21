@@ -81,11 +81,12 @@ class LibImagen:
 
     def set_contrast(self, img_in: Imagen, C: float) -> Imagen:
         F = 259 * (C + 255) / (255 * (259 - C))
-        R = F * (img_in - 128) + 128
-        R.imagen[R.imagen[..., :] > 255] = 255
-        R.imagen[R.imagen[..., :] < 0] = 0
-        R.imagen = R.imagen.astype(int)
-        return R
+        R = F * (img_in.imagen - 128) + 128
+
+        R[R > 255] = 255
+        R[R < 0] = 0
+
+        return Imagen(R.astype(int))
 
     def conv_channel(self, img_in: Imagen, kernel: np.ndarray) -> Imagen:
         """Por documentar (esto es parte del trabajo de la Etapa 6)."""
