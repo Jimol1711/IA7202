@@ -2,5 +2,15 @@
 
 import numpy as np
 
-# Su código aquí: agreguen al menos cinco tuplas (nombre, kernel).
-KERNELS: list[tuple[str, np.ndarray]] = []
+KERNELS: list[tuple[str, np.ndarray]] = [
+    # Mantiene la imagen sin cambios.
+    ("Identidad", np.array([[0, 0, 0], [0, 1, 0], [0, 0, 0]])),
+    # Detecta bordes mediante el operador laplaciano.
+    ("Laplaciano", np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])),
+    # Resalta los detalles y bordes de la imagen.
+    ("Enfoque", np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])),
+    # Suaviza la imagen promediando los píxeles vecinos.
+    ("Desenfoque", np.ones((3, 3)) / 9),
+    # Produce un efecto de relieve resaltando cambios de intensidad.
+    ("Relieve", np.array([[-2, -1, 0], [-1, 1, 1], [0, 1, 2]])),
+]

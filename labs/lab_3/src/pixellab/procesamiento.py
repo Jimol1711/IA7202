@@ -89,7 +89,21 @@ class LibImagen:
         return Imagen(R.astype(int))
 
     def conv_channel(self, img_in: Imagen, kernel: np.ndarray) -> Imagen:
-        """Por documentar (esto es parte del trabajo de la Etapa 6)."""
+        """Aplica una convolución bidimensional a cada canal de una imagen.
+
+        La convolución desplaza el kernel sobre cada canal RGB y reemplaza
+        cada píxel por la suma ponderada de sus píxeles vecinos. El resultado
+        conserva las dimensiones originales, usa una extensión simétrica en
+        los bordes y limita las intensidades al intervalo [0, 255].
+
+        Args:
+            img_in: Imagen RGB cuyos canales se procesarán.
+            kernel: Matriz bidimensional de pesos que define el filtro.
+
+        Returns:
+            Una nueva imagen, con valores enteros, resultante de aplicar el
+            kernel de forma independiente a cada canal.
+        """
         # El cuerpo de este método lo entrega el curso.
         img = img_in.imagen
         img_out = []
