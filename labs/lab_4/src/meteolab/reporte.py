@@ -6,7 +6,14 @@ from pathlib import Path
 
 import polars as pl
 
-from src.meteolab.constantes import PAISES_COMPARACION, RUTA_CSV
+from src.meteolab.constantes import ESQUEMA_CRU, PAISES_COMPARACION, RUTA_CSV
+from src.meteolab.derivadas import agregar_fecha_mensual
+from src.meteolab.limpieza import limpiar_temperaturas
+from src.meteolab.metricas import (
+    anomalias_mensuales,
+    resumen_anual_desde_mensuales,
+    resumen_mensual,
+)
 
 
 def pipeline_mensual(
@@ -14,9 +21,18 @@ def pipeline_mensual(
     paises: list[str] | tuple[str, ...] = PAISES_COMPARACION,
 ) -> pl.LazyFrame:
     """Construye el flujo mensual sin ejecutarlo."""
-    raise NotImplementedError(
-        "Completen pipeline_mensual antes de ejecutar el programa."
+    consulta = pl.scan_csv(
+        ruta,
+        schema_overrides=ESQUEMA_CRU,
     )
+
+    consulta = limpiar_temperaturas(consulta)
+
+    consulta = consulta.filter(pl.col("iso_alpha3").is_in(paises))
+
+    consulta = agregar_fecha_mensual(consulta)
+
+    return consulta.sort(["iso_alpha3", "fecha"])
 
 
 def pipeline_resumen_mensual(
@@ -24,9 +40,9 @@ def pipeline_resumen_mensual(
     paises: list[str] | tuple[str, ...] = PAISES_COMPARACION,
 ) -> pl.LazyFrame:
     """Construye la climatología mensual."""
-    raise NotImplementedError(
-        "Completen pipeline_resumen_mensual antes de ejecutar el programa."
-    )
+    mensuales = pipeline_mensual(ruta, paises)
+
+    return resumen_mensual(mensuales)
 
 
 def pipeline_resumen_anual(
@@ -34,9 +50,9 @@ def pipeline_resumen_anual(
     paises: list[str] | tuple[str, ...] = PAISES_COMPARACION,
 ) -> pl.LazyFrame:
     """Calcula medias anuales desde meses limpios."""
-    raise NotImplementedError(
-        "Completen pipeline_resumen_anual antes de ejecutar el programa."
-    )
+    mensuales = pipeline_mensual(ruta, paises)
+
+    return resumen_anual_desde_mensuales(mensuales)
 
 
 def pipeline_anomalias(
@@ -45,8 +61,11 @@ def pipeline_anomalias(
     umbral: float = 2.0,
 ) -> pl.LazyFrame:
     """Construye el flujo de anomalías mensuales."""
-    raise NotImplementedError(
-        "Completen pipeline_anomalias antes de ejecutar el programa."
+    mensuales = pipeline_mensual(ruta, paises)
+
+    return anomalias_mensuales(
+        mensuales,
+        umbral=umbral,
     )
 
 
@@ -55,9 +74,10 @@ def ejecutar_reporte(
     paises: list[str] | tuple[str, ...] = PAISES_COMPARACION,
 ) -> pl.DataFrame:
     """Materializa la climatología mensual."""
-    raise NotImplementedError(
-        "Completen ejecutar_reporte antes de ejecutar el programa."
-    )
+    return pipeline_resumen_mensual(
+        ruta,
+        paises,
+    ).collect()
 
 
 def plan_de_ejecucion(
@@ -66,6 +86,7 @@ def plan_de_ejecucion(
     optimizado: bool = True,
 ) -> str:
     """Devuelve el plan lazy como texto."""
-    raise NotImplementedError(
-        "Completen plan_de_ejecucion antes de ejecutar el programa."
-    )
+    return pipeline_resumen_mensual(
+        ruta,
+        paises,
+    ).explain(optimized=optimizado)
